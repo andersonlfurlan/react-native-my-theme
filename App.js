@@ -1,20 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+
+function HomeScreen() {
+  const { mode, toggleTheme } = useTheme();
+  const isDark = mode === "dark";
+
+  return (
+    <View style={[styles.container]}>
+      <Text style={styles.text}>
+        Tema atual: {mode.toUpperCase()}
+      </Text>
+      <Button title="Alternar Tema" onPress={toggleTheme} />
+    </View>
+  );
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeProvider>
+      <HomeScreen />
+    </ThemeProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
+  text: {
+    color: 'red'
+  },
+  getTheme(isDark) {
+    return {
+      backgroundColor: isDark ? "#000" : "#fff",
+      color: isDark ? "#fff" : "#000",
+    };
+  }
 });
