@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { Provider, useSelector, useDispatch } from 'react-redux';
 import store from './store';
-import { toggleTheme, selectTheme } from './store/themeSlice';
+import { loadTheme, toggleTheme, selectTheme } from './store/themeSlice';
 
 function HomeScreen() {
   const dispatch = useDispatch();
   const mode = useSelector(selectTheme);
   const isDark = mode === "dark";
   const theme = styles.getTheme(isDark);
+
+  // Carrega o tema salvo ao iniciar
+  useEffect(() => {
+    dispatch(loadTheme());
+  }, [dispatch]);
 
   return (
     <View
@@ -17,7 +22,10 @@ function HomeScreen() {
       <Text style={{ color: theme.color }}>
         Tema atual: {mode.toUpperCase()}
       </Text>
-      <Button title="Alternar Tema" onPress={() => dispatch(toggleTheme())} />
+      <Button 
+        title="Alternar Tema" 
+        onPress={() => dispatch(toggleTheme())}
+      />
     </View>
   );
 }
